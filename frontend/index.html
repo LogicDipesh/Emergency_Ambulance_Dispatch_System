@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Emergency Ambulance Dispatch — coordination dashboard for a simulated Dehradun">
+    <title>Ambulance Dispatch — Emergency Response Coordinator</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header id="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>Ambulance Dispatch</h1>
+                <span class="header-subtitle">Emergency Response Coordinator — Dehradun</span>
+            </div>
+            <p class="disclaimer">
+                Simulated city — road distances are approximate, not live traffic.
+                Severity ordering is a dispatch policy, not a medical diagnosis.
+                A human dispatcher makes the final call.
+            </p>
+        </div>
+    </header>
+
+    <main id="dashboard">
+        <section id="map-container">
+            <div id="map"></div>
+            <div id="map-controls">
+                <label class="toggle-control" title="Toggle route lines for all active trips">
+                    <input type="checkbox" id="toggle-routes" checked>
+                    <span class="toggle-label">Show Active Routes</span>
+                </label>
+                <label class="toggle-control" title="Toggle the 28 simulated roads">
+                    <input type="checkbox" id="toggle-roads" checked>
+                    <span class="toggle-label">Show Roads</span>
+                </label>
+                <label class="toggle-control" title="Toggle road distance labels">
+                    <input type="checkbox" id="toggle-labels" checked>
+                    <span class="toggle-label">Road Distances</span>
+                </label>
+            </div>
+            <div id="map-legend">
+                <span class="legend-item"><span class="dot" style="background:#e74c3c"></span>Waiting emergency</span>
+                <span class="legend-item"><span class="dot" style="background:#2ecc71"></span>Ambulance free</span>
+                <span class="legend-item"><span class="dot" style="background:#f39c12"></span>Ambulance busy</span>
+                <span class="legend-item"><span class="ring"></span>Hospital</span>
+            </div>
+        </section>
+
+        <aside id="panel">
+            <section class="panel-section" id="dispatch-section">
+                <h2 class="section-title">New Emergency</h2>
+                <div id="dispatch-box">
+                    <div class="dispatch-location">
+                        Location: <strong id="selNode">— click a node on the map —</strong>
+                    </div>
+                    <div class="sev-buttons">
+                        <button class="action-btn sev1" data-sev="1">1 · Critical</button>
+                        <button class="action-btn sev2" data-sev="2">2 · Serious</button>
+                        <button class="action-btn sev3" data-sev="3">3 · Minor</button>
+                    </div>
+                    <p class="picker-hint">Severity 1 is dispatched before 2, and 2 before 3.
+                    The closest free ambulance is assigned automatically.</p>
+                </div>
+            </section>
+
+            <section class="panel-section" id="incident-section">
+                <h2 class="section-title">Priority Incidents</h2>
+                <div id="incident-list">
+                    <p class="loading-message">Loading incidents…</p>
+                </div>
+            </section>
+
+            <section class="panel-section" id="resource-section">
+                <h2 class="section-title">Ambulance Fleet</h2>
+                <div id="resource-status">
+                    <p class="loading-message">Loading fleet…</p>
+                </div>
+            </section>
+
+            <section class="panel-section" id="simulate-section">
+                <h2 class="section-title">Simulation &amp; Fleet</h2>
+                <div id="simulate-panel">
+                    <div id="env-display">
+                        Sim clock <span id="sim-clock">0.0</span> min
+                        &nbsp;|&nbsp; Trips completed <span id="sim-completed">0</span>
+                    </div>
+                    <div class="sim-buttons">
+                        <button id="fleet-btn" class="action-btn primary">＋ Fleet Setup</button>
+                        <button id="reset-btn" class="action-btn danger">↺ Total Reset</button>
+                    </div>
+                    <div id="fleet-picker" class="resource-picker hidden">
+                        <p class="picker-hint">Station a new ambulance, or reposition a free one.
+                        Busy ambulances cannot be moved.</p>
+                        <div class="picker-category">
+                            <div class="picker-category-header">
+                                <span class="picker-category-label">Add ambulance</span>
+                            </div>
+                            <div class="picker-row">
+                                <select id="addAmbNode"></select>
+                                <button id="addAmbBtn" class="action-small-btn">Add</button>
+                            </div>
+                        </div>
+                        <div class="picker-category">
+                            <div class="picker-category-header">
+                                <span class="picker-category-label">Reposition free ambulance</span>
+                            </div>
+                            <div class="picker-row">
+                                <select id="moveAmbId"></select>
+                                <select id="moveAmbNode"></select>
+                                <button id="moveAmbBtn" class="action-small-btn">Move</button>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="section-title" style="margin-top:6px">Operations Log</h2>
+                    <div id="changes-display"></div>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
