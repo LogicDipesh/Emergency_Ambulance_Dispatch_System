@@ -47,7 +47,6 @@ built.
 ```bat
 build.bat        :: produces dispatch.dll + text_main.exe
 launcher.bat     :: starts Flask and opens http://127.0.0.1:5000/
-launcher.ps1     :: same launcher, for PowerShell
 text_main.exe    :: console-only demo (no Python needed)
 ```
 
@@ -96,7 +95,6 @@ simulation state is left untouched.
 ambulance-dispatch/
 ├── build.bat            :: Windows build (MinGW-w64) — dispatch.dll + text_main.exe
 ├── launcher.bat         :: one-click run (cmd / Explorer)
-├── launcher.ps1         :: one-click run (PowerShell)
 ├── README.md
 ├── c/
 │   ├── heap.h / heap.c          :: binary min-heap + position array (decrease-key)
@@ -116,14 +114,3 @@ ambulance-dispatch/
     ├── app.js                   :: Leaflet map, polls /api/state every 800 ms, controls
     └── road_geometries.json     :: real street shapes for the 28 roads (from OSRM)
 ```
-
-## Viva talking points
-
-- The heap's position array makes `decrease-key` O(log n), which is what keeps
-  Dijkstra fast — without it you'd re-insert vertices and the heap would bloat.
-- Severity ordering is encoded in the heap key as `severity * 1e6 + arrival_id`,
-  so severity always dominates and ties break by arrival order (FIFO).
-- The engine keeps one invariant: *queue non-empty ⇒ no free ambulance* —
-  every completion immediately pulls the next emergency, so nothing starves.
-- Distances are approximate (rounded to 0.5 km from published Dehradun distance
-  tables); the simulation demonstrates the DSA, not real traffic routing.
