@@ -1,9 +1,9 @@
 # Emergency Ambulance Dispatch System — Dehradun
 
-PBL Phase 2 project. A simulated city of 15 Dehradun locations (3 of them
+PBL Phase 2 project. A simulated city of 15 locations in Dehradun (3 of them
 hospitals) connected by 28 weighted roads. Emergency requests are ordered by
-medical severity in a priority queue; the closest free ambulance is found with
-Dijkstra's shortest path and dispatched; the ambulance drives to the patient,
+medical severity in a priority queue. The closest free ambulance is found with
+Dijkstra's shortest path and dispatched. The ambulance drives to the patient,
 then to the nearest hospital, drops the patient, and becomes free again at
 that hospital.
 
@@ -13,7 +13,7 @@ that hospital.
 |---|---|---|
 | 1. C99 core engine | adjacency-list graph, hand-rolled binary min-heap with position array + decrease-key, Dijkstra, emergency priority queue (heap), ambulance hash table (separate chaining) | `c/` |
 | 2. Python middleware | Flask + ctypes bridge to `dispatch.dll`, background ticker advancing the sim clock | `flask/` |
-| 3. Frontend | HTML/CSS/JS, Leaflet map over real Dehradun geography (OpenStreetMap tiles, Karyon-style dark UI): roads drawn along real streets with km labels, hospital badges that stay on top, numbered severity badges for waiting emergencies, status-coloured ambulance badges, orange polylines for active routes | `frontend/` |
+| 3. Frontend | HTML/CSS/JS, Leaflet map over real Dehradun geography (OpenStreetMap tiles): roads drawn along real streets with km labels, hospital badges that stay on top, numbered severity badges for waiting emergencies, status-coloured ambulance badges, orange polylines for active routes | `frontend/` |
 
 ## Trip loop
 
